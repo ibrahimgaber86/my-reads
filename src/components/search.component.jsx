@@ -12,17 +12,21 @@ class Search extends Component {
   };
 
   componentDidUpdate(_, prevState) {
-    const { searchText } = this.state;
-    if (searchText !== prevState.searchText && searchText && searchText.trim) {
-      this.setState({ loading: true });
-      bookApi.search(this.state.searchText).then((res) => {
-        const { error } = res;
-        if (!error) {
-          this.setState({ books: res, loading: false });
-        } else {
-          this.setState({ books: [], loading: false });
-        }
-      });
+   const { searchText } = this.state;
+    if (searchText !== prevState.searchText) {
+      if (searchText && searchText.trim) {
+        this.setState({ loading: true });
+        bookApi.search(this.state.searchText).then((res) => {
+          const { error } = res;
+          if (!error) {
+            this.setState({ books: res, loading: false });
+          } else {
+            this.setState({ books: [], loading: false });
+          }
+        });
+      } else {
+        this.setState({ books: [] });
+      }
     }
   }
   render() {
