@@ -5,14 +5,20 @@ import Loader from "./loader.component";
 import * as bookApi from "../BooksAPI";
 
 class Search extends Component {
+  constructor() {
+    super();
+    this.myref = React.createRef();
+  }
   state = {
     searchText: "",
     books: [],
     loading: false,
   };
-
+  componentDidMount() {
+    this.myref.current.focus();
+  }
   componentDidUpdate(_, prevState) {
-   const { searchText } = this.state;
+    const { searchText } = this.state;
     if (searchText !== prevState.searchText) {
       if (searchText && searchText.trim) {
         this.setState({ loading: true });
@@ -31,7 +37,6 @@ class Search extends Component {
   }
   render() {
     const { books: myBooks, onShelfChange } = this.props;
-
     return (
       <div className="search-books">
         <div className="search-books-bar">
@@ -47,6 +52,7 @@ class Search extends Component {
                 */}
             <input
               type="text"
+              ref={this.myref}
               placeholder="Search by title or author"
               value={this.state.searchText}
               onChange={(e) => this.setState({ searchText: e.target.value })}
